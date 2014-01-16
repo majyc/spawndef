@@ -67,5 +67,25 @@ public class ActorTest {
 		assertEquals("toString prints expected result", expected, actor.toString());
 	}
 
+	@org.junit.Test
+	public void eNPCFromString() throws UnrecognizedElementException, EmptyElementException, MissingBracesException, MissingElementDataException {
+		String expected = "Actor {\n" + 
+				"\tActorName B_Council\n" + 
+				"\tNumber 1\n" + 
+				"\tLocation 30\n" + 
+				"\tMinimumHeroesRequired 1\n" + 
+				"\tMaximumHeroesRequired 8\n" + 
+				"\tGang 2\n" + 
+				"\tType eNPC\n" + 
+				"\tModel Costume_1\n" + 
+				"\tVillainGroup Council\n" + 
+				"\tVillainType Boss\n" + 
+				"\tAI_Group 1\n" + 
+				"\tAI_InActive <<Wander>>\n" + 
+				"\tAI_Alerted <<Combat>>\n" + 
+				"}\n"; 
+		Actor actor = new Actor(expected);
+		assertEquals("Parsed Actor string prints expected result", expected, actor.toString());
+	}
 
 }

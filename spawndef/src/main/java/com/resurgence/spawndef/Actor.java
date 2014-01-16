@@ -89,6 +89,9 @@ public class Actor {
 		setAI_InActive(aI_InActive);
 		setAI_Alerted(aI_Alerted);
 	}
+	public Actor(String actorString) throws UnrecognizedElementException, EmptyElementException, MissingBracesException, MissingElementDataException {		
+		parse(actorString);
+	}
 	@Override
 	public String toString() {
 		return  ACTOR_LIT + " " + OPEN_DEF
@@ -216,7 +219,8 @@ public class Actor {
 			next = scanner.next();
 			if (!next.equals(OPEN_DEF)) throw new MissingBracesException();
 			while (scanner.hasNext()) {
-				next = scanner.next(); 
+				next = scanner.next();
+				if (next.equals(CLOSE_DEF)) break;
 				parseElement(next, scanner);
 			}
 		} finally {
@@ -224,7 +228,7 @@ public class Actor {
 		}
 	}
 	
-	private void parseElement(String elementType, Scanner scanner) throws MissingElementDataException, UnrecognizedElementException {
+	protected void parseElement(String elementType, Scanner scanner) throws MissingElementDataException, UnrecognizedElementException {
 		if (!ELEMENT_NAMES.contains(elementType)) throw new UnrecognizedElementException("Unrecognized Element [" + elementType + "]");
 		if (!scanner.hasNext()) throw new MissingElementDataException("No data found for element [" + elementType + "]");
 		String next = scanner.next();
