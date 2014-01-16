@@ -4,6 +4,7 @@
 package com.resurgence.spawndef;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -40,6 +41,8 @@ public class Actor {
 	public static final String E_NPC = "eNPC";
 	public static final String ACTOR_LIT = "Actor";
 		
+	// used to enforce only element names that we understand, in case there are typos
+	// or old or invalid formats
 	public static final ImmutableSet<String> ELEMENT_NAMES = ImmutableSet.of(
 			  "ActorName",
 			  "Number",
@@ -59,7 +62,8 @@ public class Actor {
 			  "AI_Alerted"
 			  );
 	
-	protected Map<String, String> elements = new HashMap<String, String>();
+	// preserve the order of insertions so that the definition comes out in a predicatable order
+	protected LinkedHashMap<String, String> elements = new LinkedHashMap<String, String>();
 	
 	public Actor() {
 		
@@ -94,19 +98,12 @@ public class Actor {
 	}
 	@Override
 	public String toString() {
-		return  ACTOR_LIT + " " + OPEN_DEF
-				+ "\n\tActorName " + getActorName() + "\n\tNumber " + getNumber()
-				+ "\n\tLocation " + getLocation() + "\n\tMinimumHeroesRequired "
-				+ getMinimumHeroesRequired() + "\n\tMaximumHeroesRequired "
-				+ getMaximumHeroesRequired() + "\n\tGang " + getGang() + "\n\tType " + getType()
-				+ (isEVillain() ? "\n\tVillain " + getVillain() : "\n\tModel " + getModel())
-				+ "\n\tVillainGroup " + getVillainGroup()
-				+ "\n\tVillainType " + getVillainType() 
-				+ (getShoutChance() != null ? "\n\tShoutChance " + getShoutChance() : "")
-				+ (getShoutRange() != null ? "\n\tShoutRange " + getShoutRange() : "")
-				+ "\n\tAI_Group " + getAI_Group()
-				+ "\n\tAI_InActive " + getAI_InActive() + "\n\tAI_Alerted " + getAI_Alerted()
-				+ "\n}\n";
+		String s = ACTOR_LIT + " " + OPEN_DEF;
+		for (String key : elements.keySet()) {
+			s += "\n\t" + key + " " + elements.get(key);
+		}
+		s += "\n" + CLOSE_DEF + "\n";
+		return s;
 	}
 	public boolean isEVillain() {
 		return getType().equalsIgnoreCase(E_VILLAIN) ? true : false;
@@ -211,8 +208,9 @@ public class Actor {
 	public void parse(String actorString) throws UnrecognizedElementException, EmptyElementException, MissingBracesException, MissingElementDataException {
 		actorString = actorString.trim();
 		if(!actorString.endsWith(CLOSE_DEF)) throw new MissingBracesException("Missing close braces in definition");
-		Scanner scanner = new Scanner(actorString);
-		try {
+		// new Java 7 Automatic Resource Management lets you declare a scope and ensure that resources opened for that scope
+		// always get close() called as if there was a finally block
+		try (Scanner scanner = new Scanner(actorString)) {
 			if (!scanner.hasNext()) throw new EmptyElementException();
 			String next = scanner.next();
 			if (!next.equals(ACTOR_LIT)) throw new UnrecognizedElementException();
@@ -223,8 +221,6 @@ public class Actor {
 				if (next.equals(CLOSE_DEF)) break;
 				parseElement(next, scanner);
 			}
-		} finally {
-			scanner.close();  // here's where we wish we had D's scope(exit) statement
 		}
 	}
 	
