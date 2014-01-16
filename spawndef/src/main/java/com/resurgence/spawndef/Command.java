@@ -1,6 +1,8 @@
 package com.resurgence.spawndef;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
 
 /*
  * class Command:
@@ -29,15 +31,29 @@ import java.util.ArrayList;
 public class Command {
 
 	protected int timeIncrement;
-	protected int entity;
+	protected String entity; // usually an int, but can be a string like "CAM" for the camera
+	public String getEntity() {
+		return entity;
+	}
+
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	protected String name;
-	protected ArrayList<Object> data;
 
 	public Command() {
 		timeIncrement = 0;
-		entity = 0;
+		entity = "0"; 
 		name = "";
-		data = null;
 	}
 	
 	public Command(int timeIncrement) {
@@ -49,15 +65,15 @@ public class Command {
 		return timeIncrement;
 	}
 
+	public String dataToString() {
+		return "";
+	}
+	
 	@Override
 	public String toString() {
 		String s = String.format("%1$s   %2$s", timeIncrement, entity);
 		if (name.length() > 0) s += "   " + name;
-		if (data != null) {
-			for (Object iterable_element : data) {
-				s += " " + iterable_element.toString();
-			}
-		}
+		s += dataToString();
 		return s;
 	}
 

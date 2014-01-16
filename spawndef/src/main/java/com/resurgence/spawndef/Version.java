@@ -20,18 +20,27 @@ public class Version extends Command {
         self.data = [2]
 	 */
 
-	public Version() {
-		super(1);
-		name = "Version";
-		data = new ArrayList<Object>();
-		data.add(new Integer(2));
-	}
-
+	public static final String VERSION_COMMAND = "Version";
+	private ArrayList<Integer> data;
 	public Version(int timeIncrement) {
 		super(timeIncrement);
-		name = "Version";
-		data = new ArrayList<Object>();
-		data.add(2);
+		name = VERSION_COMMAND;
+		data = new ArrayList<Integer>();
+		data.add(new Integer(2));
+	}
+	public Version() {
+		this(1);
+	}
+	
+	@Override
+	public String dataToString() {
+		String s = "";
+		if (data != null) {
+			for (Object iterable_element : data) {
+				s += " " + iterable_element.toString();
+			}
+		}
+		return s;
 	}
 
 }

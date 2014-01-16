@@ -17,5 +17,12 @@ public class VersionTest {
 		String expected = "1   0   Version 2";
 		assertEquals(expected, v.toString());
 	}
-	
+
+	@org.junit.Test
+	public void timeIncrementCommand() {
+		Version v = new Version(2);
+		String expected = "2   0   Version 2";
+		assertEquals(expected, v.toString());
+	}
+
 }
