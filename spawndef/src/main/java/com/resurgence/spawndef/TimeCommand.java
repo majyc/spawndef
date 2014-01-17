@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 /*
  *    
-    """Time - command to set the time of day in the demo
+    """TimeCommand - command to set the time of day in the demo
     >>> t = Time(10.00)
     >>> print(t)
     0   0   TIME 10.00
@@ -16,10 +16,10 @@ import java.util.Scanner;
         self.data = ["{:.2f}".format(time)]
         self.name = "TIME"
  */
-public class Time extends Command {
+public class TimeCommand extends Command {
 	public static final String TIME_COMMAND = "TIME";
 	private ArrayList<String> data;
-	public Time() {
+	public TimeCommand() {
 		super();
 		name = TIME_COMMAND;
 		data = new ArrayList<String>();
@@ -31,7 +31,7 @@ public class Time extends Command {
 	 * 
 	 * @param time
 	 */
-	public Time(double time) {
+	public TimeCommand(double time) {
 		this();
 		setTime(time);
 	}
@@ -45,7 +45,7 @@ public class Time extends Command {
 	 * 
 	 * @param s
 	 */
-	public Time(String s) {
+	public TimeCommand(String s) {
 		this();
 		parse(s);
 	}
@@ -54,7 +54,7 @@ public class Time extends Command {
 	 * copy Constructor
 	 * @param t
 	 */
-	public Time(Time t) {
+	public TimeCommand(TimeCommand t) {
 		this(t.toString());
 	}
 	

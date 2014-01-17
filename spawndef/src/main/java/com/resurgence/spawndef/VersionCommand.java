@@ -2,7 +2,7 @@ package com.resurgence.spawndef;
 
 import java.util.ArrayList;
 
-public class Version extends Command {
+public class VersionCommand extends Command {
 	/*
 	 * 
 	 """Version - command to set the demorecord version number
@@ -22,17 +22,17 @@ public class Version extends Command {
 
 	public static final String VERSION_COMMAND = "Version";
 	private ArrayList<String> data;
-	public Version(int timeIncrement) {
+	public VersionCommand(int timeIncrement) {
 		super(timeIncrement);
 		name = VERSION_COMMAND;
 		data = new ArrayList<String>();
 		data.add("2");
 	}
-	public Version() {
+	public VersionCommand() {
 		this(1);
 	}
 	
-	public Version(String expected) {
+	public VersionCommand(String expected) {
 		this();
 		super.parse(expected);
 		String[] args = expected.split("\\s+");
