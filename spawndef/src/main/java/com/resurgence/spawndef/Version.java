@@ -21,15 +21,27 @@ public class Version extends Command {
 	 */
 
 	public static final String VERSION_COMMAND = "Version";
-	private ArrayList<Integer> data;
+	private ArrayList<String> data;
 	public Version(int timeIncrement) {
 		super(timeIncrement);
 		name = VERSION_COMMAND;
-		data = new ArrayList<Integer>();
-		data.add(new Integer(2));
+		data = new ArrayList<String>();
+		data.add("2");
 	}
 	public Version() {
 		this(1);
+	}
+	
+	public Version(String expected) {
+		this();
+		super.parse(expected);
+		String[] args = expected.split("\\s+");
+		if (args.length == 4) {
+			// passed a version number
+			data.remove(0);
+			data.add(args[3]);
+		}
+		
 	}
 	
 	@Override

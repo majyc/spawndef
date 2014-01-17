@@ -2,7 +2,7 @@ package com.resurgence.spawndef;
 
 import static org.junit.Assert.*;
 
-public class TestPos {
+public class PosTest {
 
 	/*
 	 *    
@@ -134,5 +134,27 @@ public class TestPos {
 		assertEquals(p.toString(), p2.toString());
 	}
 
+	@org.junit.Test
+	public void moveAngle() {
+		Pos p = new Pos("33", "133.326782", "168.000000", "-646.427490");
+		p.moveAtAngle(90, 10);
+		String expected =  "0   33   POS 123.326782 168.000000 -646.427490";
+		assertEquals(expected, p.toString());
+	}
 
+	@org.junit.Test
+	public void moveNorthEast() {
+		Pos original = new Pos("33", "133.326782", "168.000000", "-646.427490");
+		Pos modified = new Pos(original);
+		modified.moveDirection(COMPASS.NORTHEAST, 10);
+		// should be more north (lower Y) and more east (lower X)
+		assertTrue("Modified position is more east (lower X)", modified.getX() < original.getX());
+		assertTrue("Modified position is more north (lower Y)", modified.getY() < original.getY());
+		String expected =  "0   33   POS 126.255714 160.928932 -646.427490";
+		assertEquals(expected, modified.toString());
+	}
+
+
+
+	
 }

@@ -1,6 +1,7 @@
 package com.resurgence.spawndef;
 
 import java.util.EnumMap;
+import java.util.Scanner;
 import java.util.Map.Entry;
 
 /*
@@ -97,28 +98,66 @@ public class Pos extends Command {
 	private EnumMap<COORD, String> data;
 	
 
+	/**
+	 * No-arg Contructor
+	 * sets all values to 0 and name to POS_COMMAND
+	 */
 	public Pos() {
 		super();
-	}
-
-	public Pos(String entity, String X, String Y, String Z, String timeIncrement) {
-		super(Integer.parseInt(timeIncrement));
-		this.entity = entity;
 		name = POS_COMMAND;
 		data = new EnumMap<COORD, String>(COORD.class);
 		// initialize array
 		data.put(COORD.X, "0");
 		data.put(COORD.Y, "0");
 		data.put(COORD.Z, "0");
+	}
+
+	/**
+	 * @param entity
+	 * @param X
+	 * @param Y
+	 * @param Z
+	 * @param timeIncrement
+	 */
+	public Pos(String entity, String X, String Y, String Z, String timeIncrement) {
+		this();
+		setEntity(entity);
+		setTimeIncrement(timeIncrement);
 		// now enter the data, using the setter to ensure canonical format
 		setX(X);
 		setY(Y);
 		setZ(Z);
 	}
 	
+	
+	/**
+	 * String constructor - expects a string like
+	 * "0   33   POS 143.326782 168.000000 -646.427490"
+	 * from the demorecord format with the values for
+	 * timeincrement entity POS x_coord y_coord, z_coord
+	 * @param s
+	 */
+	public Pos(String s) {
+		this();
+		parse(s);		 
+	}
+
+	/**
+	 * 
+	 */
+	protected void parse(String string) {
+		try (Scanner scanner = new Scanner(string)) {
+			timeIncrement = scanner.nextInt();
+			entity = scanner.next();
+			name = scanner.next();
+			setX(scanner.nextDouble());
+			setY(scanner.nextDouble());
+			setZ(scanner.nextDouble());
+		}
+	}
+	
 	public Pos(Pos p) {
-		// no defensive copies, because all the values are immutable
-		this(p.getEntity(), p.getXString(), p.getYString(), p.getZString(), p.getTimeIncrementString());
+		this(p.toString());
 	}
 	
 	@Override
@@ -136,24 +175,25 @@ public class Pos extends Command {
 		}
 		return s;
 	}
-	private String getValueString(COORD pos) {
+	
+	public String getValueString(COORD pos) {
 		return (String) data.get(pos);
 	}
 	
-	private String getYString() {
+	public String getXString() {
+		return getValueString(COORD.X);
+	}
+
+	public String getYString() {
 		return getValueString(COORD.Y);
 	}
 
-	private String getZString() {
+	public String getZString() {
 		return getValueString(COORD.Z);
 	}
 
-	private String getTimeIncrementString() {
+	public String getTimeIncrementString() {
 		return String.valueOf(timeIncrement);
-	}
-
-	private String getXString() {
-		return getValueString(COORD.X);
 	}
 
 	public Pos(String entity, String X, String Y, String Z) {
@@ -266,6 +306,14 @@ public class Pos extends Command {
 
 
 	 */
+	
+	
+	/**
+	 * moveDirection - moves the Pos in a compass direction by a number of feet; use @moveAtAngle to move freely in different directions
+	 * @param dir  compass direction, including UP and DOWN
+	 * @param feet number of feet to move in a direction; negative feet will move in the opposite direction (negative move WEST is 
+	 * same as positive move EAST)
+	 */
 	public void moveDirection(COMPASS dir, double feet) {
 		switch(dir) {
 		case NORTH:
@@ -303,7 +351,45 @@ public class Pos extends Command {
 		}		
 	}
 	
-	private void moveAtAngle(double angle, double feet) {
+	/**
+	 * moveAtAngle moves a number of feet at an arbitrary angle 
+	 * @param angle measured in degrees starting from 0 straight North and going clockwise
+	 * @param feet  distance to move
+	 */
+	public void moveAtAngle(double angle, double feet) {
 		move(Math.sin(Math.toRadians(angle)) * -feet,  Math.cos(Math.toRadians(angle)) * -feet, 0);
 	}
+	
+	/**
+	 * moveAtAngle moves a number of feet along an arbitrary angle with regard to the Z-axis 
+	 * @param angle measured in degrees starting from 0 in the current Z plane and 90 straight up
+	 * @param feet  distance to move
+	 * @param fixedAxis which axis to regard as fixed (e.g. Y means that moving up at an angle will change only the Z and X coords)
+	 * @throws InvalidFixedAxisException 
+	 */
+	public void moveAtZAngle(double angle, double feet, COORD fixedAxis) throws InvalidFixedAxisException {
+		// -feet for X and Y axis because their interpretation is backwards from the usual Cartesian plane,
+		// growing as you move to the left
+		// Z axis fortunately remains the same
+		switch(fixedAxis) {
+		case X:
+			move(0, Math.cos(Math.toRadians(angle)) * -feet,  Math.sin(Math.toRadians(angle)) * feet);	
+			break;
+		case Y:
+			move(Math.cos(Math.toRadians(angle)) * -feet, 0,  Math.sin(Math.toRadians(angle)) * feet);	
+			break;
+		case Z:
+			// degenerate case, you've asked to move vertically while holding Z steady.
+			throw new InvalidFixedAxisException("Cannot fix Z axis when moving at Z angle");
+		default:
+			throw new InvalidFixedAxisException("Unrecognized COORD [" + fixedAxis + "]");
+		}
+		
+		if (fixedAxis == COORD.Y) {
+					
+		} else {
+			
+		}
+	}	
+	
 }

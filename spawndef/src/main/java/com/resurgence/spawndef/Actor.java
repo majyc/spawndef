@@ -3,9 +3,7 @@
  */
 package com.resurgence.spawndef;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 import com.google.common.collect.ImmutableSet;
@@ -31,7 +29,7 @@ import com.google.common.collect.ImmutableSet;
 	}
  *
  */
-public class Actor {
+public class Actor extends Command {
 	public static final String OPEN_DEF = "{";
 	public static final String CLOSE_DEF = "}";
 	public static final String OPEN_LIST = "<<";
@@ -205,9 +203,15 @@ public class Actor {
 		elements.put("AI_Alerted", aI_Alerted);
 	}
 	
-	public void parse(String actorString) throws UnrecognizedElementException, EmptyElementException, MissingBracesException, MissingElementDataException {
+	public void parse(String actorString) {
 		actorString = actorString.trim();
-		if(!actorString.endsWith(CLOSE_DEF)) throw new MissingBracesException("Missing close braces in definition");
+		if(!actorString.endsWith(CLOSE_DEF))
+			try {
+				throw new MissingBracesException("Missing close braces in definition");
+			} catch (MissingBracesException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		// new Java 7 Automatic Resource Management lets you declare a scope and ensure that resources opened for that scope
 		// always get close() called as if there was a finally block
 		try (Scanner scanner = new Scanner(actorString)) {
@@ -221,6 +225,18 @@ public class Actor {
 				if (next.equals(CLOSE_DEF)) break;
 				parseElement(next, scanner);
 			}
+		} catch (EmptyElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MissingBracesException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnrecognizedElementException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MissingElementDataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

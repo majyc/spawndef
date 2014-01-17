@@ -1,8 +1,6 @@
 package com.resurgence.spawndef;
 
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.Scanner;
 
 /*
  * class Command:
@@ -32,6 +30,45 @@ public class Command {
 
 	protected int timeIncrement;
 	protected String entity; // usually an int, but can be a string like "CAM" for the camera
+
+	public Command() {
+		timeIncrement = 0;
+		entity = "0"; 
+		name = "COMMAND";
+	}
+	
+	public Command(int timeIncrement) {
+		this();
+		this.timeIncrement = timeIncrement;
+	}
+
+	// can't really throw EmptyElementException unless something has gone horribly wrong, but that's Java for you
+	public Command(Command c) {
+		this(c.toString());
+	}
+	
+	public Command(String string) {
+		this();
+		parse(string);
+	}
+
+	protected void parse(String string) {
+		string = string.trim();
+		// new Java 7 Automatic Resource Management lets you declare a scope and ensure that resources opened for that scope
+		// always get close() called as if there was a finally block
+		try (Scanner scanner = new Scanner(string)) {
+			if (scanner.hasNext()) {
+				timeIncrement = Integer.parseInt(scanner.next());
+			}
+			if (scanner.hasNext()) {
+				entity = scanner.next();
+			}
+			if (scanner.hasNext()) {
+				name = scanner.next();
+			}
+		}		
+	}
+
 	public String getEntity() {
 		return entity;
 	}
@@ -50,19 +87,12 @@ public class Command {
 
 	protected String name;
 
-	public Command() {
-		timeIncrement = 0;
-		entity = "0"; 
-		name = "";
-	}
-	
-	public Command(int timeIncrement) {
-		this();
-		this.timeIncrement = timeIncrement;
-	}
-
 	public int getTimeIncrement() {
 		return timeIncrement;
+	}
+	
+	public void setTimeIncrement(String timeIncrement) {
+		this.timeIncrement = Integer.parseInt(timeIncrement);
 	}
 
 	public String dataToString() {
