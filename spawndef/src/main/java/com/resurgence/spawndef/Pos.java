@@ -1,12 +1,16 @@
 package com.resurgence.spawndef;
 
 import java.util.EnumMap;
+import java.util.Scanner;
 import java.util.Map.Entry;
 
 public class Pos {
+	private static final String POS = "Pos";
 	private EnumMap<COORD, String> data;
+	private String name;
 
 	public Pos() {
+		name = POS;
 		data= new EnumMap<COORD, String>(COORD.class);
 		// initialize array
 		data.put(COORD.X, "0");
@@ -14,6 +18,37 @@ public class Pos {
 		data.put(COORD.Z, "0");
 	}
 
+	public Pos(String x, String y, String z) {
+		this();
+		setX(x);
+		setY(y);
+		setZ(z);
+	}
+
+	public Pos(Pos p) {
+		this(p.toString());
+	}
+
+	public Pos(String string) {
+		this();
+		parse(string);
+	}
+
+	private void parse(String string) {
+		try (Scanner scanner = new Scanner(string)) {
+			setName(scanner.next());
+			setX(scanner.nextDouble());
+			setY(scanner.nextDouble());
+			setZ(scanner.nextDouble());
+		}
+	}
+
+	public String toString() {
+		String s = String.format("%1$s", name);
+		s += dataToString();
+		return s;
+	}	
+	
 	public void setX(String x) {
 		setValue(COORD.X, x);
 	}
@@ -169,6 +204,24 @@ public class Pos {
 		} else {
 			
 		}
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getX() {
+		return Double.parseDouble(getValue(COORD.X));
+	}
+	public double getY() {
+		return Double.parseDouble(getValue(COORD.Y));
+	}
+	public double getZ() {
+		return Double.parseDouble(getValue(COORD.Z));
 	}
 	
 	
