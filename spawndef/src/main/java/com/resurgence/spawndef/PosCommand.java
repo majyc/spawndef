@@ -127,7 +127,7 @@ public class PosCommand extends Command {
 	
 	/**
 	 * String constructor - expects a string like
-	 * "0   33   POS 143.326782 168.000000 -646.427490"
+	 * "POS 143.326782 168.000000 -646.427490"
 	 * from the demorecord format with the values for
 	 * timeincrement entity POS x_coord y_coord, z_coord
 	 * @param s
