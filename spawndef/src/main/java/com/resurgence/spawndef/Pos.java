@@ -4,11 +4,14 @@ import java.util.EnumMap;
 import java.util.Scanner;
 import java.util.Map.Entry;
 
-public class Pos {
+public class Pos extends DefElement {
 	private static final String POS = "Pos";
 	private EnumMap<COORD, String> data;
-	private String name;
-
+	
+	public static Pos newInstance(String s) {
+		return new Pos(s);
+	}
+	
 	public Pos() {
 		name = POS;
 		data= new EnumMap<COORD, String>(COORD.class);
@@ -25,7 +28,7 @@ public class Pos {
 		setZ(z);
 	}
 
-	public Pos(Pos p) {
+	public Pos(DefElement p) {
 		this(p.toString());
 	}
 
@@ -42,12 +45,6 @@ public class Pos {
 			setZ(scanner.nextDouble());
 		}
 	}
-
-	public String toString() {
-		String s = String.format("%1$s", name);
-		s += dataToString();
-		return s;
-	}	
 	
 	public void setX(String x) {
 		setValue(COORD.X, x);
@@ -204,14 +201,6 @@ public class Pos {
 		} else {
 			
 		}
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public double getX() {
