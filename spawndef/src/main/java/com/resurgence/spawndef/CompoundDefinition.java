@@ -53,8 +53,9 @@ public abstract class CompoundDefinition extends Definition {
 	private String name = "";
 
 	public String toString() {
-		String s = beginDelimiter + " " + name + dataToString() + "\n" + endDelimiter + "\n";
-		return s;
+		StringBuilder sb = new StringBuilder();
+		sb.append(beginDelimiter).append(" ").append(name).append(dataToString()).append("\n").append(endDelimiter).append("\n");
+		return sb.toString();
 	}
 
 	public String getBeginDelimiter() {
