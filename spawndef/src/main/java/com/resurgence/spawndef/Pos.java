@@ -1,5 +1,6 @@
 package com.resurgence.spawndef;
 
+import java.text.DecimalFormat;
 import java.util.EnumMap;
 import java.util.Scanner;
 import java.util.Map.Entry;
@@ -12,6 +13,8 @@ import java.util.Map.Entry;
 public class Pos extends Definition {
 	private static final String POS = "Pos";
 	private EnumMap<COORD, String> data;
+	private static final DecimalFormat df = new DecimalFormat("0.######"); // standard format, omits trailing zeroes, max precision of 6
+	
 	
 	/**
 	 * Static factory method for Pos
@@ -105,7 +108,7 @@ public class Pos extends Definition {
 		if (d == 0) {
 			s = "0";
 		} else {
-			s = String.format("%1$.6f", d);
+			s = df.format(d);
 		}
 		data.put(pos, s);
 	}

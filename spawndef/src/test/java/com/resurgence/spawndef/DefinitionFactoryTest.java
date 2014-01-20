@@ -6,10 +6,10 @@ public class DefinitionFactoryTest {
 
 	@org.junit.Test
 	public void createPos() {
-		String expected = "Pos 143.326782 188.000000 -676.427490";
+		String expected = "Pos 143.326782 188 -676.42749";
 		Pos p = (Pos) DefinitionFactory.newInstance("Pos", expected);
 		assertEquals("Round trip is successful", expected, p.toString());
-		Pos p2 = new Pos("143.326782", "188.000000", "-676.427490");
+		Pos p2 = new Pos("143.326782", "188", "-676.427490");
 		assertEquals("Creating via factory is equivalent to manually", p.toString(), p2.toString());
 	}
 

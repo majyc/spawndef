@@ -56,7 +56,7 @@ public class GroupTest {
 	@org.junit.Test
 	public void simpleGroup() {
 		String expected = "Group Omni/EncounterSpawns/Encounter_E_01\n" + 
-				"\tPos -25.000000 0 8.400000\n" + 
+				"\tPos -25 0 8.4\n" + 
 				"End\n";
 		Group g = new Group(expected);
 		assertEquals(expected, g.toString());
@@ -84,7 +84,7 @@ public class GroupTest {
 	public void nestedGroup() {
 		String expected = "Group grp_spawns\n" + 
 				"\tGroup grp_example_def\n" + 
-				"\t\tPos 125.000000 0 91.600000\n" + 
+				"\t\tPos 125 0 91.6\n" + 
 				"\tEnd\n" + 
 				"End\n" + 
 				"";
@@ -96,13 +96,13 @@ public class GroupTest {
 	public void complexNestedGroup() {
 		String expected = "Group grp_example_def\n" + 
 				"\tGroup Omni/EncounterSpawns/Encounter_E_01\n" + 
-				"\t\tPos -25.000000 0 8.400000\n" + 
+				"\t\tPos -25 0 8.4\n" + 
 				"\tEnd\n" + 
 				"\tGroup Omni/EncounterSpawns/Encounter_E_02\n" + 
-				"\t\tPos 25.000000 1.000000 -41.600000\n" + 
+				"\t\tPos 25 1 -41\n" + 
 				"\tEnd\n" + 
 				"\tGroup Omni/EncounterSpawns/Encounter_E_03\n" + 
-				"\t\tPos 0 0 33.400000\n" + 
+				"\t\tPos 0 0 33.4\n" + 
 				"\tEnd\n" + 
 				"\tProperty   \"CanSpawn1\"   \"SpawnDefs\\City_03_01\\ExampleDef.spawndef\"   0\n" + 
 				"End\n";
