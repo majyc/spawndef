@@ -1,13 +1,10 @@
 package com.resurgence.spawndef;
 
-/**
- * Hello world!
+/*
+ *  Examples of using Swing Controls.
  *
+
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
-    }
-}
+
+
+
