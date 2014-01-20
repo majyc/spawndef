@@ -20,6 +20,7 @@ public class DefinitionFactory {
 		return null;
 	}
 	
+	// cannot instantiate
 	private DefinitionFactory() {}
 
 	// could this be generic?

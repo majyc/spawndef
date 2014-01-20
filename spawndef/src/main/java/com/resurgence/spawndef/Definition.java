@@ -2,7 +2,7 @@ package com.resurgence.spawndef;
 
 public abstract class Definition {
 
-	protected String name;
+	String name;
 
 	public String getName() {
 		return name;

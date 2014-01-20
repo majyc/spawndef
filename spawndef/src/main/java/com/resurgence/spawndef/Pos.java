@@ -4,10 +4,28 @@ import java.util.EnumMap;
 import java.util.Scanner;
 import java.util.Map.Entry;
 
+/**
+ * Pos represents a single X,Y,Z position in the world
+ * @author Joshua
+ *
+ */
 public class Pos extends Definition {
 	private static final String POS = "Pos";
 	private EnumMap<COORD, String> data;
 	
+	/**
+	 * Static factory method for Pos
+	 * Requires a canonical string with param data separated by spaces and terminated by newline
+	 * Pos X_COORD Y_COORD Z_COORD
+	 * Examples:
+	 *
+	 * POS 143.326782 188.000000 -676.427490
+	 * or
+	 * POS 143.326782 188 -676.427490
+	 *
+	 * @param s string in the canonical format, as found in DemoRecord filed
+	 * @return
+	 */
 	public static Pos newInstance(String s) {
 		return new Pos(s);
 	}

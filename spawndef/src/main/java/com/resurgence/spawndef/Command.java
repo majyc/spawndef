@@ -43,16 +43,16 @@ public class Command {
 	}
 
 	// can't really throw EmptyElementException unless something has gone horribly wrong, but that's Java for you
-	public Command(Command c) {
+	public Command(Command c) throws InvalidFormatException {
 		this(c.toString());
 	}
 	
-	public Command(String string) {
+	public Command(String string) throws InvalidFormatException {
 		this();
 		parse(string);
 	}
 
-	protected void parse(String string) {
+	protected void parse(String string) throws InvalidFormatException {
 		string = string.trim();
 		// new Java 7 Automatic Resource Management lets you declare a scope and ensure that resources opened for that scope
 		// always get close() called as if there was a finally block

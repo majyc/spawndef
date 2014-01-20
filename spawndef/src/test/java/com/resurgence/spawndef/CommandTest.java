@@ -18,7 +18,7 @@ public class CommandTest {
 	}
 	
 	@org.junit.Test
-	public void copyCommand() {
+	public void copyCommand() throws InvalidFormatException {
 		Command c = new Command(1);
 		String expected = "1   0   COMMAND";
 		assertEquals(expected, c.toString());
@@ -28,7 +28,7 @@ public class CommandTest {
 	}
 	
 	@org.junit.Test
-	public void stringConstructor() {
+	public void stringConstructor() throws InvalidFormatException {
 		Command c = new Command("1   0   COMMAND");
 		String expected = "1   0   COMMAND";
 		assertEquals(expected, c.toString());

@@ -1,6 +1,6 @@
 package com.resurgence.spawndef;
 
-public class EmptyElementException extends Exception {
+public class InvalidFormatException extends Exception {
 
 
 	/**
@@ -8,24 +8,24 @@ public class EmptyElementException extends Exception {
 	 */
 	private static final long serialVersionUID = -8431764300944957936L;
 
-	public EmptyElementException() {
+	public InvalidFormatException() {
 		super();
 	}
 
-	public EmptyElementException(String message, Throwable cause,
+	public InvalidFormatException(String message, Throwable cause,
 			boolean enableSuppression, boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
-	public EmptyElementException(String message, Throwable cause) {
+	public InvalidFormatException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public EmptyElementException(String message) {
+	public InvalidFormatException(String message) {
 		super(message);
 	}
 
-	public EmptyElementException(Throwable cause) {
+	public InvalidFormatException(Throwable cause) {
 		super(cause);
 	}
 

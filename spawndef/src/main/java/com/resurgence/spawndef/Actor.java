@@ -91,7 +91,7 @@ public class Actor extends Command {
 		setAI_InActive(aI_InActive);
 		setAI_Alerted(aI_Alerted);
 	}
-	public Actor(String actorString) throws UnrecognizedElementException, EmptyElementException, MissingBracesException, MissingElementDataException {		
+	public Actor(String actorString) throws UnrecognizedElementException, InvalidFormatException, MissingBracesException, MissingElementDataException {		
 		parse(actorString);
 	}
 	@Override
@@ -203,46 +203,30 @@ public class Actor extends Command {
 		elements.put("AI_Alerted", aI_Alerted);
 	}
 	
-	public void parse(String actorString) {
+	public void parse(String actorString) throws InvalidFormatException {
 		actorString = actorString.trim();
-		if(!actorString.endsWith(CLOSE_DEF))
-			try {
-				throw new MissingBracesException("Missing close braces in definition");
-			} catch (MissingBracesException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if(!actorString.endsWith(CLOSE_DEF)) {
+				throw new InvalidFormatException("Missing close braces in Actor definition: [" + actorString + "]");
+		}
 		// new Java 7 Automatic Resource Management lets you declare a scope and ensure that resources opened for that scope
 		// always get close() called as if there was a finally block
 		try (Scanner scanner = new Scanner(actorString)) {
-			if (!scanner.hasNext()) throw new EmptyElementException();
+			if (!scanner.hasNext()) throw new InvalidFormatException("Empty element in Actor definition: [" + actorString + "]");
 			String next = scanner.next();
-			if (!next.equals(ACTOR_LIT)) throw new UnrecognizedElementException();
+			if (!next.equals(ACTOR_LIT)) throw new InvalidFormatException("Expected ACTOR in Actor definition: [" + actorString + "]" );
 			next = scanner.next();
-			if (!next.equals(OPEN_DEF)) throw new MissingBracesException();
+			if (!next.equals(OPEN_DEF)) throw new InvalidFormatException("Expected " + OPEN_DEF + " in Actor definition: [" + actorString + "]");
 			while (scanner.hasNext()) {
 				next = scanner.next();
 				if (next.equals(CLOSE_DEF)) break;
 				parseElement(next, scanner);
 			}
-		} catch (EmptyElementException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MissingBracesException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnrecognizedElementException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MissingElementDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
-	protected void parseElement(String elementType, Scanner scanner) throws MissingElementDataException, UnrecognizedElementException {
-		if (!ELEMENT_NAMES.contains(elementType)) throw new UnrecognizedElementException("Unrecognized Element [" + elementType + "]");
-		if (!scanner.hasNext()) throw new MissingElementDataException("No data found for element [" + elementType + "]");
+	protected void parseElement(String elementType, Scanner scanner) throws InvalidFormatException  {
+		if (!ELEMENT_NAMES.contains(elementType)) throw new InvalidFormatException("Unrecognized Element [" + elementType + "]");
+		if (!scanner.hasNext()) throw new InvalidFormatException("No data found for element [" + elementType + "]");
 		String next = scanner.next();
 		elements.put(elementType, next);
 	}

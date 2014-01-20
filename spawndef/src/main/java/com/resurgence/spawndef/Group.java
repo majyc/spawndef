@@ -17,6 +17,10 @@ public class Group extends CompoundDefinition {
 		data = new ArrayList<Definition>();
 	}
 	
+	/**
+	 * String constructor
+	 * @param s constructor string in canonical format
+	 */
 	public Group(String s) {
 		this();
 		try (Scanner scanner = new Scanner(s)) {

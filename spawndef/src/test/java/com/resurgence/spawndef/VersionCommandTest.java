@@ -26,14 +26,14 @@ public class VersionCommandTest {
 	}
 	
 	@org.junit.Test
-	public void stringConstructor() {
+	public void stringConstructor() throws InvalidFormatException {
 		String expected = "2   0   Version 2";
 		VersionCommand v = new VersionCommand(expected);
 		assertEquals(expected, v.toString());
 	}
 	
 	@org.junit.Test
-	public void stringConstructor2() {
+	public void stringConstructor2() throws InvalidFormatException {
 		// Version 3 doesn't exist yet, but what if it did?
 		String expected = "2   0   Version 3";
 		VersionCommand v = new VersionCommand(expected);

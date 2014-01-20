@@ -68,7 +68,7 @@ public class ActorTest {
 	}
 
 	@org.junit.Test
-	public void eNPCFromString() throws UnrecognizedElementException, EmptyElementException, MissingBracesException, MissingElementDataException {
+	public void eNPCFromString() throws UnrecognizedElementException, InvalidFormatException, MissingBracesException, MissingElementDataException {
 		String expected = "Actor {\n" + 
 				"\tActorName B_Council\n" + 
 				"\tNumber 1\n" + 

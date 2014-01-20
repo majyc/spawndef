@@ -32,7 +32,7 @@ public class VersionCommand extends Command {
 		this(1);
 	}
 	
-	public VersionCommand(String expected) {
+	public VersionCommand(String expected) throws InvalidFormatException {
 		this();
 		super.parse(expected);
 		String[] args = expected.split("\\s+");
