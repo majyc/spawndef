@@ -2,7 +2,7 @@ package com.resurgence.spawndef;
 
 import java.util.Scanner;
 
-public class DefElementFactory {
+public class DefinitionFactory {
 
 	/**
 	 * static factory to create an appropriate DefInstance based on the type and the string representation to initialize the type
@@ -10,7 +10,7 @@ public class DefElementFactory {
 	 * @param constructorString
 	 * @return
 	 */
-	public static DefElement newInstance(String type, String constructorString) {
+	public static Definition newInstance(String type, String constructorString) {
 		switch(type) {
 		case "Pos":
 			return Pos.newInstance(constructorString);
@@ -20,8 +20,9 @@ public class DefElementFactory {
 		return null;
 	}
 	
-	private DefElementFactory() {}
+	private DefinitionFactory() {}
 
+	// could this be generic?
 	public static Definition newInstance(String type, Scanner scanner) {
 		String constructorLine = null;
 		switch(type) {

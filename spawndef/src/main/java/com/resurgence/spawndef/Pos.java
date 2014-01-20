@@ -4,7 +4,7 @@ import java.util.EnumMap;
 import java.util.Scanner;
 import java.util.Map.Entry;
 
-public class Pos extends DefElement {
+public class Pos extends Definition {
 	private static final String POS = "Pos";
 	private EnumMap<COORD, String> data;
 	
@@ -28,7 +28,7 @@ public class Pos extends DefElement {
 		setZ(z);
 	}
 
-	public Pos(DefElement p) {
+	public Pos(Definition p) {
 		this(p.toString());
 	}
 

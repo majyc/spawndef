@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 import com.google.common.base.Joiner;
 
-public class Group extends Definition {
+public class Group extends CompoundDefinition {
 
 	public static final String GROUP_BEGIN = "Group";
 	public static final String GROUP_END = "End";
@@ -30,7 +30,7 @@ public class Group extends Definition {
 		while(scanner.hasNext()) {
 			String next = scanner.next();
 			if (next.equalsIgnoreCase(GROUP_END)) break;
-			Definition e = (Definition) DefElementFactory.newInstance(next, scanner);
+			Definition e = (Definition) DefinitionFactory.newInstance(next, scanner);
 			data.add(e);
 		}		
 	}
