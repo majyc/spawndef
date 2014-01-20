@@ -93,6 +93,21 @@ public class GroupTest {
 	}
 
 	@org.junit.Test
+	public void slightlyWorseNestedGroup() {
+		String expected = "Group grp_spawns\n" + 
+				"\tGroup grp_example_def\n" + 
+				"\t\tPYR 25 0 -10\n" + 
+				"\t\tPos 125 0 91.6\n" + 
+				"\tEnd\n" + 
+				"End\n" + 
+				"";
+		Group g = new Group(expected);
+		assertEquals(expected, g.toString());
+	}
+
+
+	
+	@org.junit.Test
 	public void complexNestedGroup() {
 		String expected = "Group grp_example_def\n" + 
 				"\tGroup Omni/EncounterSpawns/Encounter_E_01\n" + 
@@ -110,4 +125,35 @@ public class GroupTest {
 		assertEquals(expected, g.toString());		
 	}
 	
+
+	@org.junit.Test
+	public void nastyComplexNestedGroup() {
+		String expected = "Def grp_captured_5th_walker\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_V_40\n" + 
+				"\t\tPos -6.666748 0 -1.333252\n" + 
+				"\tEnd\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_V_41\n" + 
+				"\t\tPos -2.666748 0 -1.333252\n" + 
+				"\tEnd\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_E_01\n" + 
+				"\t\tPos -6.666748 0 6.666748\n" + 
+				"\tEnd\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_E_02\n" + 
+				"\t\tPos 1.333252 0 6.666748\n" + 
+				"\tEnd\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_V_42\n" + 
+				"\t\tPos 1.333252 0 -1.333252\n" + 
+				"\tEnd\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_S_30\n" + 
+				"\t\tPYR 0 90 -0\n" + 
+				"\t\tPos 13.333252 0 -9.333252\n" + 
+				"\tEnd\n" + 
+				"\tProperty   \"CanSpawn0\"   \"SpawnDefs/Haz_02_01/Council_Captured_5th_Walker_LV14_19_V0.spawndef\"   0\n" + 
+				"\tProperty   \"EncounterSpawn\"   \"Apprehend\"   0\n" + 
+				"End\n";
+		Group g = new Group(expected);
+		assertEquals(expected, g.toString());		
+	}
+	
+
 }

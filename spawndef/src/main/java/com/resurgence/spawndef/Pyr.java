@@ -1,5 +1,7 @@
 package com.resurgence.spawndef;
 
+import java.util.Scanner;
+
 /**
  *  Pyr - sets the Pitch, Yaw, and Roll of the entity
     The PYR command is followed by a set of three numerical map coordinates in Pitch Yaw Roll format. 
@@ -67,10 +69,33 @@ public class Pyr extends Definition {
 		this.r = r;
 	}
 
+	public Pyr(String constructorString) {
+		this();
+		parse(constructorString);
+	}
+
+	public Pyr(Pyr p) {
+		this(p.toString());
+	}
+
+	private void parse(String constructorString) {
+		try (Scanner scanner = new Scanner(constructorString)) {
+			name = scanner.next();
+			p = scanner.next();
+			y = scanner.next();
+			r = scanner.next();
+		}
+		
+	}
+
 	@Override
 	protected String dataToString() {
-		String s = String.format("   %s   %s   %s", p, y, r );
+		String s = String.format(" %s %s %s", p, y, r );
 		return s;
+	}
+
+	public static Definition newInstance(String constructorString) {
+		return new Pyr(constructorString);
 	}
 
 }

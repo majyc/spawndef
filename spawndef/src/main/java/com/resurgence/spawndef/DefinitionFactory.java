@@ -36,8 +36,9 @@ public class DefinitionFactory {
 			}
 			return Pos.newInstance(type + " " + constructorLine);
 		case "Group":
+		case "Def":	
 			String name = scanner.next();
-			constructorLine = "Group " + name;
+			constructorLine = type + " " + name;
 			while(scanner.hasNextLine()) {
 				String nextLine = scanner.nextLine().trim();
 				if (nextLine.length() == 0) continue;
@@ -54,7 +55,10 @@ public class DefinitionFactory {
 			}
 			return Property.newInstance(type + " " + constructorLine);
 		case "PYR":
-			break;
+			if (scanner.hasNextLine()) {
+				constructorLine = scanner.nextLine();
+			}
+			return Pyr.newInstance(type + " " + constructorLine);
 		}
 		return null;
 	}

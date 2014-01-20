@@ -48,12 +48,12 @@ package com.resurgence.spawndef;
  *
  */
 public abstract class CompoundDefinition extends Definition {
-	protected String beginDelimiter = "Def";
-	protected String endDelimiter = "End";
-	protected String name = "";
+	private String beginDelimiter = "Def";
+	private String endDelimiter = "End";
+	private String name = "";
 
 	public String toString() {
-		String s = beginDelimiter + " " + name + "\n" + dataToString() + "\n" + endDelimiter + "\n";
+		String s = beginDelimiter + " " + name + dataToString() + "\n" + endDelimiter + "\n";
 		return s;
 	}
 
