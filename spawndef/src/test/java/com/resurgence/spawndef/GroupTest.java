@@ -92,4 +92,22 @@ public class GroupTest {
 		assertEquals(expected, g.toString());
 	}
 
+	@org.junit.Test
+	public void complexNestedGroup() {
+		String expected = "Group grp_example_def\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_E_01\n" + 
+				"\t\tPos -25.000000 0 8.400000\n" + 
+				"\tEnd\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_E_02\n" + 
+				"\t\tPos 25.000000 1.000000 -41.600000\n" + 
+				"\tEnd\n" + 
+				"\tGroup Omni/EncounterSpawns/Encounter_E_03\n" + 
+				"\t\tPos 0 0 33.400000\n" + 
+				"\tEnd\n" + 
+				"\tProperty   \"CanSpawn1\"   \"SpawnDefs\\City_03_01\\ExampleDef.spawndef\"   0\n" + 
+				"End\n";
+		Group g = new Group(expected);
+		assertEquals(expected, g.toString());		
+	}
+	
 }

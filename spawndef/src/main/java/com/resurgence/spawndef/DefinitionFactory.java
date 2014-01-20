@@ -14,6 +14,8 @@ public class DefinitionFactory {
 		switch(type) {
 		case "Pos":
 			return Pos.newInstance(constructorString);
+		case "Property":
+			return Property.newInstance(constructorString);
 		case "PYR":
 			break;
 		}
@@ -28,6 +30,7 @@ public class DefinitionFactory {
 		String constructorLine = null;
 		switch(type) {
 		case "Pos":
+			constructorLine = "NaN NaN NaN"; // default to something obviously wrong
 			if (scanner.hasNextLine()) {
 				constructorLine = scanner.nextLine();
 			}
@@ -36,13 +39,20 @@ public class DefinitionFactory {
 			String name = scanner.next();
 			constructorLine = "Group " + name;
 			while(scanner.hasNextLine()) {
-				String nextLine = scanner.nextLine();
+				String nextLine = scanner.nextLine().trim();
+				if (nextLine.length() == 0) continue;
 				constructorLine += "\n" + nextLine;
 				if (nextLine.equalsIgnoreCase(Group.GROUP_END)) {
 					break;
 				}
 			}
 			return new Group(constructorLine);
+		case "Property":
+			constructorLine = "\"MISSING DATA\" \"This shouldn't happen\" 0"; //default to something obviously wrong
+			if (scanner.hasNextLine()) {
+				constructorLine = scanner.nextLine();
+			}
+			return Property.newInstance(type + " " + constructorLine);
 		case "PYR":
 			break;
 		}
