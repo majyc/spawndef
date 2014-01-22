@@ -20,12 +20,13 @@ import java.util.Scanner;
  * @author Joshua
  *
  */
-public class Pyr extends Definition {
+public class Pyr implements IDefinition {
 	private static final String PYR = "PYR";
 	private static final double TWO_PI = Math.PI * 2;
 	private String p;
 	private String y;
 	private String r;
+	private String name;
 	
 	public Pyr() {
 		name = PYR;
@@ -87,15 +88,28 @@ public class Pyr extends Definition {
 		}
 		
 	}
-
-	@Override
+	
+	public String toString() {
+		return name + dataToString();
+	}
+	
 	protected String dataToString() {
 		String s = String.format(" %s %s %s", p, y, r );
 		return s;
 	}
 
-	public static Definition newInstance(String constructorString) {
+	public static IDefinition newInstance(String constructorString) {
 		return new Pyr(constructorString);
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

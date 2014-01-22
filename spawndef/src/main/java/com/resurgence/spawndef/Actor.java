@@ -29,7 +29,7 @@ import com.google.common.collect.ImmutableSet;
 	}
  *
  */
-public class Actor extends Command {
+public class Actor implements IDefinition {
 	public static final String OPEN_DEF = "{";
 	public static final String CLOSE_DEF = "}";
 	public static final String OPEN_LIST = "<<";
@@ -91,17 +91,24 @@ public class Actor extends Command {
 		setAI_InActive(aI_InActive);
 		setAI_Alerted(aI_Alerted);
 	}
-	public Actor(String actorString) throws UnrecognizedElementException, InvalidFormatException, MissingBracesException, MissingElementDataException {		
+	public Actor(String actorString) throws InvalidFormatException {		
 		parse(actorString);
 	}
 	@Override
 	public String toString() {
-		String s = ACTOR_LIT + " " + OPEN_DEF;
+		StringBuilder s = new StringBuilder(); 
+		s.append(ACTOR_LIT).append("\n").append(OPEN_DEF);
+		s.append(dataToString());
+		s.append("\n").append(CLOSE_DEF).append("\n");
+		return s.toString();
+	}
+
+	protected String dataToString() {
+		StringBuilder sb = new StringBuilder();
 		for (String key : elements.keySet()) {
-			s += "\n\t" + key + " " + elements.get(key);
+			sb.append("\n\t").append(key).append(" ").append(elements.get(key));
 		}
-		s += "\n" + CLOSE_DEF + "\n";
-		return s;
+		return sb.toString();
 	}
 	public boolean isEVillain() {
 		return getType().equalsIgnoreCase(E_VILLAIN) ? true : false;
@@ -229,5 +236,15 @@ public class Actor extends Command {
 		if (!scanner.hasNext()) throw new InvalidFormatException("No data found for element [" + elementType + "]");
 		String next = scanner.next();
 		elements.put(elementType, next);
+	}
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
 	}
 }

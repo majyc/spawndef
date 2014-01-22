@@ -10,7 +10,7 @@ public class DefinitionFactory {
 	 * @param constructorString
 	 * @return
 	 */
-	public static Definition newInstance(String type, String constructorString) {
+	public static IDefinition newInstance(String type, String constructorString) {
 		switch(type) {
 		case "Pos":
 			return Pos.newInstance(constructorString);
@@ -26,7 +26,7 @@ public class DefinitionFactory {
 	private DefinitionFactory() {}
 
 	// could this be generic?
-	public static Definition newInstance(String type, Scanner scanner) {
+	public static IDefinition newInstance(String type, Scanner scanner) {
 		String constructorLine = null;
 		switch(type) {
 		case "Pos":

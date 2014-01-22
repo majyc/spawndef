@@ -27,7 +27,8 @@ public class ActorTest {
 
 	@org.junit.Test
 	public void actorToString() {
-		String expected = "Actor {\n" + 
+		String expected = "Actor\n"
+				+ "{\n" + 
 				"\tActorName B_Council\n" + 
 				"\tNumber 1\n" + 
 				"\tLocation 30\n" + 
@@ -48,7 +49,8 @@ public class ActorTest {
 
 	@org.junit.Test
 	public void eNPCToString() {
-		String expected = "Actor {\n" + 
+		String expected = "Actor\n"
+				+ "{\n" + 
 				"\tActorName B_Council\n" + 
 				"\tNumber 1\n" + 
 				"\tLocation 30\n" + 
@@ -69,7 +71,8 @@ public class ActorTest {
 
 	@org.junit.Test
 	public void eNPCFromString() throws UnrecognizedElementException, InvalidFormatException, MissingBracesException, MissingElementDataException {
-		String expected = "Actor {\n" + 
+		String expected = "Actor\n"
+				+ "{\n" + 
 				"\tActorName B_Council\n" + 
 				"\tNumber 1\n" + 
 				"\tLocation 30\n" + 

@@ -10,11 +10,12 @@ import java.util.Map.Entry;
  * @author Joshua
  *
  */
-public class Pos extends Definition {
+public class Pos implements IDefinition {
 	private static final String POS = "Pos";
 	private EnumMap<COORD, String> data;
 	private static final DecimalFormat df = new DecimalFormat("0.######"); // standard format, omits trailing zeroes, max precision of 6
-	
+
+	String name;
 	
 	/**
 	 * Static factory method for Pos
@@ -49,7 +50,7 @@ public class Pos extends Definition {
 		setZ(z);
 	}
 
-	public Pos(Definition p) {
+	public Pos(IDefinition p) {
 		this(p.toString());
 	}
 
@@ -232,6 +233,20 @@ public class Pos extends Definition {
 	}
 	public double getZ() {
 		return Double.parseDouble(getValue(COORD.Z));
+	}
+
+	public String toString() {
+		return name + dataToString();
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

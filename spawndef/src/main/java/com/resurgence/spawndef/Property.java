@@ -2,12 +2,13 @@ package com.resurgence.spawndef;
 
 import java.util.Scanner;
 
-public class Property extends Definition {
+public class Property implements IDefinition {
 	
 	public static String PROPERTY = "Property";
 	private String propName;
 	private String propValue;
 	private String extra;
+	private String name;
 	
 	public Property(String constructorString) {
 		parse(constructorString);
@@ -30,9 +31,11 @@ public class Property extends Definition {
 	public Property(Property p) {
 		parse(p.toString());
 	}
-
-
-	@Override
+	
+	public String toString() {
+		return name + dataToString();
+	}
+	
 	protected String dataToString() {
 		String s = String.format("   %s   %s   %s", propName, propValue, extra );
 		return s;
@@ -66,6 +69,18 @@ public class Property extends Definition {
 
 	public void setExtra(String extra) {
 		this.extra = extra;
+	}
+
+
+	@Override
+	public String getName() {
+		return this.name;
+	}
+
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
