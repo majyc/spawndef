@@ -34,6 +34,7 @@ public class SpawnDef implements IDefinition {
 	private String dialog;
 	private ArrayList<String> flags = new ArrayList<String>();
 	private ArrayList<Actor> actors = new ArrayList<Actor>();
+	private String name;
 	
 	public static final ImmutableSet<String> PROPERTIES_NAMES = ImmutableSet.of(
 			VILLAIN_MIN_LEVEL,
@@ -106,6 +107,12 @@ public class SpawnDef implements IDefinition {
 		case ENCOUNTER_ALLIANCE:
 			encounterAlliance = scanner.next();
 			break;
+		case DIALOG:
+			scanner.useDelimiter("\n");
+			dialog = scanner.next();
+			dialog = dialog.trim(); // scanning for newline leaves some extra whitespace compared to whitespace-by-whitespace
+			scanner.reset();
+			break;
 		case FLAGS:
 			parseFlags(scanner);
 			break;
@@ -116,6 +123,51 @@ public class SpawnDef implements IDefinition {
 		}
 	}
 
+	public void setPropertyByName(String name, String value) {
+		switch(name) {
+		case VILLAIN_MIN_LEVEL:
+			villainMinLevel = Integer.parseInt(value);
+			break;
+		case VILLAIN_MAX_LEVEL:
+			villainMaxLevel = Integer.parseInt(value);
+			break;
+		case MIN_TEAM_SIZE:
+			minTeamSize = Integer.parseInt(value);
+			break;
+		case MAX_TEAM_SIZE:
+			maxTeamSize = Integer.parseInt(value);
+			break;
+		case ENCOUNTER_ALLIANCE:
+			encounterAlliance = value;
+			break;
+		case DIALOG:
+			dialog = value;
+			break;
+		default:
+			break;
+		}
+	}
+
+	public String getPropertyByName(String name) {
+		switch(name) {
+		case VILLAIN_MIN_LEVEL:
+			return Integer.toString(villainMinLevel);
+		case VILLAIN_MAX_LEVEL:
+			return Integer.toString(villainMaxLevel);
+		case MIN_TEAM_SIZE:
+			return Integer.toString(minTeamSize);
+		case MAX_TEAM_SIZE:
+			return Integer.toString(maxTeamSize);
+		case ENCOUNTER_ALLIANCE:
+			return encounterAlliance;
+		case DIALOG:
+			return dialog;
+		default:
+			return "Unknown Property Name [" + name +"]";
+		}
+	}
+
+
 	private void parseActor(Scanner scanner) throws InvalidFormatException {
 		// Strip off the entirety of the Actor def and create an Actor
 		StringBuilder actorString = new StringBuilder();
@@ -123,7 +175,8 @@ public class SpawnDef implements IDefinition {
 		scanner.useDelimiter(Actor.CLOSE_DEF);
 		String nextToken = scanner.next();
 		scanner.reset();  // restore the default (whitespace) delimiter
-		actorString.append(Actor.ACTOR_LIT).append(nextToken).append(Actor.CLOSE_DEF);
+		String close = scanner.next(); // consume the delimiter and close the Actor string
+		actorString.append(Actor.ACTOR_LIT).append(nextToken).append(close);
 		Actor actor = new Actor(actorString.toString());
 		actors.add(actor);
 	}
@@ -231,22 +284,21 @@ public class SpawnDef implements IDefinition {
 			for (Actor actor : actors) {
 				temp = actor.toString().split(NEW_LINE);
 				indented = Joiner.on( NEW_LINE + LINE_START ).join( temp );
-				sb.append(LINE_START).append(indented);
+				sb.append(LINE_START).append(indented).append(NEW_LINE);
 			}
+			sb.deleteCharAt(sb.length()-1); // trim last NEW_LINE
 		}
 		return sb.toString();
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
+		this.name = name;
 	}
 
 }
