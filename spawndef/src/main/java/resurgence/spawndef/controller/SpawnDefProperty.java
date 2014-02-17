@@ -1,23 +1,32 @@
 package resurgence.spawndef.controller;
 
+import javafx.beans.property.SimpleStringProperty;
+
 public class SpawnDefProperty {
-	private String name;
-	private String value;
-	public SpawnDefProperty(String name, String value) {
-		this.name = name;
-		this.value = value;
+	private final SimpleStringProperty name;
+	private final SimpleStringProperty value;
+	
+	SpawnDefProperty(String name, String value) {
+		this.name = new SimpleStringProperty(name);
+		this.value = new SimpleStringProperty(value);
 	}
 	public String getName() {
-		return name;
+		return name.get();
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name.set(name);
 	}
 	public String getValue() {
-		return value;
+		return value.get();
 	}
 	public void setValue(String value) {
-		this.value = value;
+		this.value.set(value);
+	}
+	public String getDialog() {
+		return value.get();
+	}
+	public void setDialog(String dialog) {
+		this.value.set(dialog);
 	}
 
 }
