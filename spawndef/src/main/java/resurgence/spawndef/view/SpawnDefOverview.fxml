@@ -35,7 +35,7 @@
                   <children>
                     <TableView fx:id="propertyTable" editable="true" prefHeight="298.0" prefWidth="435.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                       <columns>
-                        <TableColumn editable="false" prefWidth="75.0" text="Property" fx:id="propNameColumn" />
+                        <TableColumn editable="false" maxWidth="5000.0" minWidth="10.0" prefWidth="175.0" text="Property" fx:id="propNameColumn" />
                         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="349.0" text="Value" fx:id="propValueColumn" />
                       </columns>
                     </TableView>

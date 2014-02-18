@@ -2,7 +2,6 @@ package resurgence.spawndef.controller;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -13,7 +12,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import resurgence.spawndef.SpawnDef;
 
 public class SpawnDefOverviewController {
 
@@ -32,10 +30,6 @@ public class SpawnDefOverviewController {
 
 	@SuppressWarnings("unused")
 	private MainApp mainApp;
-
-	String fileName; // To display in the window caption
-	String content;  // string version of the SpawnDef, just to make load/save a little easier to debug
-	private boolean dirty;
 
 	public SpawnDefOverviewController() {
 
@@ -56,7 +50,7 @@ public class SpawnDefOverviewController {
 				new TreeItem<String>("Properties"),
 				new TreeItem<String>("Flags"),
 				new TreeItem<String>("Actors"));
-
+		
 		propNameColumn.setCellValueFactory(new PropertyValueFactory<SpawnDefProperty, String>("name"));
 
 		propValueColumn.setCellValueFactory(new PropertyValueFactory<SpawnDefProperty, String>("value"));
@@ -99,15 +93,5 @@ public class SpawnDefOverviewController {
 		// Add observable list data to the table
 		propertyTable.setItems(mainApp.getPropertyData());	      
 	}
-
-	public boolean isDirty() {
-		return dirty;
-	}
-
-	public void setDirty(boolean dirty) {
-		this.dirty = dirty;
-	}
-
-
 
 }

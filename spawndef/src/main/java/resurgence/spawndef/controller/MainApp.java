@@ -51,7 +51,7 @@ public class MainApp extends Application {
 					"Could not load RootLayout file:\n" + "../view/RootLayout.fxml",
 					"Could not start up", "Error", e);
 		}
-		showSpawnDefOverview();
+//		showSpawnDefOverview();
 	}
 	/**
 	 * Returns the main stage.
@@ -90,13 +90,13 @@ public class MainApp extends Application {
 	void populateProperties(ObservableList<SpawnDefProperty> propertyData) {
 		if (spawnDef == null) return;
 		for (String spawnDefPropertyName : SpawnDef.PROPERTIES_NAMES) {
-			propertyData.add(new SpawnDefProperty(spawnDefPropertyName, spawnDef.getPropertyByName(spawnDefPropertyName)));			
+			propertyData.add(new SpawnDefProperty(spawnDef, spawnDefPropertyName, spawnDef.getPropertyByName(spawnDefPropertyName)));			
 		}
 	}
 
 
 	/**
-	 * Returns the data as an observable list of Persons. 
+	 * Returns the data as an observable list of SpawnDefProperties. 
 	 * @return
 	 */
 	public ObservableList<SpawnDefProperty> getPropertyData() {
@@ -148,9 +148,14 @@ public class MainApp extends Application {
 	 * @param propertyData 
 	 */
 	void saveSpawnDefToFile(File file) {
+		saveProperties(propertyData);
 		String content = getSpawnDefString();
 		try {
-			FileUtil.saveFile(content, file);
+			if (file.exists()) {
+				FileUtil.saveFileWithBackup(file, content);
+			}
+			FileUtil.saveFile(file, content);
+			setDirty(false);
 		} catch (IOException e) {
 			Dialogs.showErrorDialog(primaryStage,
 					"Could not save data to file:\n" + file.getPath(),
@@ -175,9 +180,15 @@ public class MainApp extends Application {
 	void loadSpawnDef(File file) throws IOException, InvalidFormatException {
 		String content = FileUtil.readFile(file);
 		spawnDef = new SpawnDef(content);
+		setDirty(false);
 		populateProperties(propertyData);
 	};
 	
+	boolean isDirty() {
+		return spawnDef != null && spawnDef.isDirty();
+	}
+
+
 	/**
 	 * saveProperties - save the property data from the ObvervableList into the SpawnDef this controls
 	 * @param propertyData 
@@ -202,5 +213,10 @@ public class MainApp extends Application {
 
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+
+	public void setDirty(boolean b) {
+		spawnDef.setDirty(b);
 	}
 }

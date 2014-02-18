@@ -30,11 +30,12 @@ public class SpawnDef implements IDefinition {
 	private int villainMaxLevel;
 	private int minTeamSize;
 	private int maxTeamSize;
-	private String encounterAlliance;
-	private String dialog;
+	private String encounterAlliance = ""; // need to be empty strings so that SpawnDef properties behave.
+	private String dialog = "";
 	private ArrayList<String> flags = new ArrayList<String>();
 	private ArrayList<Actor> actors = new ArrayList<Actor>();
 	private String name;
+	private boolean dirty;
 	
 	public static final ImmutableSet<String> PROPERTIES_NAMES = ImmutableSet.of(
 			VILLAIN_MIN_LEVEL,
@@ -264,10 +265,10 @@ public class SpawnDef implements IDefinition {
 		sb.append(LINE_START).append(VILLAIN_MAX_LEVEL).append(PARAM_DELIMITER).append(villainMaxLevel).append(NEW_LINE);
 		sb.append(LINE_START).append(MIN_TEAM_SIZE).append(PARAM_DELIMITER).append(minTeamSize).append(NEW_LINE);
 		sb.append(LINE_START).append(MAX_TEAM_SIZE).append(PARAM_DELIMITER).append(maxTeamSize).append(NEW_LINE);
-		if (encounterAlliance != null) {
+		if (encounterAlliance != null && encounterAlliance.length() > 0) {
 			sb.append(LINE_START).append(ENCOUNTER_ALLIANCE).append(PARAM_DELIMITER).append(encounterAlliance).append(NEW_LINE);			
 		}
-		if (dialog != null) {
+		if (dialog != null  && dialog.length() > 0) {
 			sb.append(LINE_START).append(DIALOG).append(PARAM_DELIMITER).append(dialog).append(NEW_LINE);			
 		}
 		if (!flags.isEmpty())  {
@@ -299,6 +300,14 @@ public class SpawnDef implements IDefinition {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setDirty(boolean b) {
+		this.dirty = b;
+	}
+
+	public boolean isDirty() {
+		return dirty;
 	}
 
 }
