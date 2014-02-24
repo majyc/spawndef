@@ -183,7 +183,7 @@ public class SpawnDef implements IDefinition {
 	}
 
 	private void parseFlags(Scanner scanner) throws InvalidFormatException {
-		String line = scanner.nextLine();
+		String line = scanner.nextLine().trim();
 		String[] flagArray = line.split("\\s+");
 		for (String flag : flagArray) {
 			if (!FLAG_NAMES.contains(flag)) throw new InvalidFormatException("Unrecognized Flag [" + flag + "]");
@@ -273,8 +273,11 @@ public class SpawnDef implements IDefinition {
 		}
 		if (!flags.isEmpty())  {
 			sb.append(LINE_START).append(FLAGS);
-			for(String flag : flags) {
-				sb.append(PARAM_DELIMITER).append(flag);
+			// fix the order, just so otherwise identical files won't appear different because the flags were selected in a different order
+			for(String flag : FLAG_NAMES) {
+				if (flags.contains(flag)) {
+					sb.append(PARAM_DELIMITER).append(flag);
+				}
 			}
 			sb.append(NEW_LINE);
 		}
@@ -308,6 +311,26 @@ public class SpawnDef implements IDefinition {
 
 	public boolean isDirty() {
 		return dirty;
+	}
+
+	public boolean getFlag(String spawnFlagName) {
+		return flags.contains(spawnFlagName);
+	}
+	
+	public void setFlag(String flag, boolean value) throws InvalidFormatException {
+		if (value) {
+			if (FLAG_NAMES.contains(flag)) {
+				if (!flags.contains(flag)) {
+					flags.add(flag);			
+				}
+			} else {
+				throw new InvalidFormatException("Unrecognized Flag [" + flag + "]");
+			}
+		} else {
+			if (flags.contains(flag)) {
+				flags.remove(flag);
+			}
+		}
 	}
 
 }

@@ -5,11 +5,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
@@ -26,9 +28,19 @@ public class SpawnDefOverviewController {
 	private TableColumn<SpawnDefProperty, String> propValueColumn;
 
 	@FXML
+	private TableView<SpawnDefFlag> flagTable;
+	@FXML
+	private TableColumn<SpawnDefFlag, String> flagNameColumn;
+	@FXML
+	private TableColumn<SpawnDefFlag, Boolean> flagValueColumn;
+	
+	
+	@FXML
 	private Label treeLabel;
 
-	@SuppressWarnings("unused")
+	@FXML
+	private TabPane tabPane;
+	
 	private MainApp mainApp;
 
 	public SpawnDefOverviewController() {
@@ -66,6 +78,11 @@ public class SpawnDefOverviewController {
 				}
 				);
 
+		flagNameColumn.setCellValueFactory(new PropertyValueFactory<SpawnDefFlag, String>("name"));
+
+		
+		flagValueColumn.setCellValueFactory(new PropertyValueFactory<SpawnDefFlag, Boolean>("value"));
+		flagValueColumn.setCellFactory(CheckBoxTableCell.<SpawnDefFlag>forTableColumn(flagValueColumn));
 
 		//Use the setRoot method to set the root TreeItem
 		sdTree.setRoot(sdRoot);
@@ -76,10 +93,24 @@ public class SpawnDefOverviewController {
 				new ChangeListener<TreeItem <String>>() {
 					public void changed(ObservableValue<? extends TreeItem<String>> observableValue, 
 							TreeItem<String> oldItem, TreeItem<String> newItem) {
-						treeLabel.setText(treeLabelText + newItem.getValue());
+						String selected = newItem.getValue();
+						treeLabel.setText(treeLabelText + selected);
+						selected = selected.toLowerCase();
+						if (selected.startsWith("flag")) {
+							flagTable.toFront();
+						} else if (selected.startsWith("prop")) {
+							propertyTable.toFront();
+						}
 					}
 				});
 
+		//Set a ChangeLister to handle when the tab selection changes
+		tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> ov, Number oldValue, Number newValue) {
+		        mainApp.changedTab(oldValue, newValue);
+		    }
+		}); 
 	}
 
 	/**
@@ -91,7 +122,8 @@ public class SpawnDefOverviewController {
 		this.mainApp = mainApp;
 
 		// Add observable list data to the table
-		propertyTable.setItems(mainApp.getPropertyData());	      
+		propertyTable.setItems(mainApp.getPropertyData());
+		flagTable.setItems(mainApp.getFlagData());
 	}
 
 }

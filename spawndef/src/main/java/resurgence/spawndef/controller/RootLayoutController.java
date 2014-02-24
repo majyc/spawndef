@@ -14,6 +14,8 @@ import resurgence.spawndef.InvalidFormatException;
 
 
 public class RootLayoutController {
+	private static final String SPAWN_DEF_EXT = ".spawndef";
+
 	private MainApp mainApp;
 	
 	@FXML
@@ -74,7 +76,7 @@ public class RootLayoutController {
 		// Set extension filter
 
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-				"SpawnDef files (*.sd)", "*.sd");
+				"SpawnDef files (*" + SPAWN_DEF_EXT + ")", "*" + SPAWN_DEF_EXT);
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = null;
 		switch (fileOperation) {
@@ -118,8 +120,8 @@ public class RootLayoutController {
 
 		if (file != null) {
 			// Make sure it has the correct extension
-			if (!file.getPath().endsWith(".sd")) {
-				file = new File(file.getPath() + ".sd");
+			if (!file.getPath().endsWith(SPAWN_DEF_EXT)) {
+				file = new File(file.getPath() + SPAWN_DEF_EXT);
 			}
 			mainApp.saveSpawnDefToFile(file);
 			saveItem.setDisable(true);

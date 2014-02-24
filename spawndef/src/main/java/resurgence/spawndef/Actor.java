@@ -57,7 +57,12 @@ public class Actor implements IDefinition {
 			  "ShoutRange",
 			  "AI_Group",
 			  "AI_InActive",
-			  "AI_Alerted"
+			  "Dialog_InActive",
+			  "AI_Alerted",
+			  "Dialog_Alerted",
+			  "AI_Completion",
+			  "Dialog_Completion",
+			  "Dialog_ThankHero"
 			  );
 	
 	// preserve the order of insertions so that the definition comes out in a predicatable order

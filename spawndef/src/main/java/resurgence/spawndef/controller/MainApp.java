@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.prefs.Preferences;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +27,7 @@ public class MainApp extends Application {
 	 * The data as an observable list of SpawnDefProperties.
 	 */
 	private ObservableList<SpawnDefProperty> propertyData = FXCollections.observableArrayList();
+	private ObservableList<SpawnDefFlag> flagData = FXCollections.observableArrayList();
 	
 	private SpawnDef spawnDef;
 
@@ -83,7 +86,7 @@ public class MainApp extends Application {
 
 
 	/**
-	 * populateProperties - fill the ObservableList with data from the SpawnDef this controls
+	 * populateProperties - fill the ObservableList with data from the SpawnDef this controls for properties
 	 * @param propertyData 
 	 * 
 	 */
@@ -91,6 +94,28 @@ public class MainApp extends Application {
 		if (spawnDef == null) return;
 		for (String spawnDefPropertyName : SpawnDef.PROPERTIES_NAMES) {
 			propertyData.add(new SpawnDefProperty(spawnDef, spawnDefPropertyName, spawnDef.getPropertyByName(spawnDefPropertyName)));			
+		}
+	}
+
+	/**
+	 * populateFlags - fill the ObservableList with data from the SpawnDef this controls for flags
+	 * @param flagData 
+	 * 
+	 */
+	void populateFlags(ObservableList<SpawnDefFlag> flagData) {
+		if (spawnDef == null) return;
+		for (String spawnFlagName : SpawnDef.FLAG_NAMES) {
+			flagData.add(new SpawnDefFlag(spawnDef, spawnFlagName, spawnDef.getFlag(spawnFlagName)));
+		}
+		for (final SpawnDefFlag sdf : flagData) {
+			sdf.valueProperty().addListener(new ChangeListener<Object>(){
+		        @Override 
+		        public void changed(ObservableValue<?> o,Object oldVal, 
+		                 Object newVal){
+		        	// if changed is called, it's automatically dirty, regardless of old vs. new value
+		        	sdf.getOwner().setDirty(true);
+		        }
+		      });
 		}
 	}
 
@@ -103,7 +128,16 @@ public class MainApp extends Application {
 		return propertyData;
 	}
 		
+	/**
+	 * Returns the data as an observable list of SpawnDefFlags. 
+	 * @return
+	 */
+	public ObservableList<SpawnDefFlag> getFlagData() {
+		return flagData;
+	}
+		
 
+	
 	/**
 	 * Returns the SpawnDef file preference, i.e. the file that was last opened.
 	 * The preference is read from the OS specific registry. If no such
@@ -149,6 +183,7 @@ public class MainApp extends Application {
 	 */
 	void saveSpawnDefToFile(File file) {
 		saveProperties(propertyData);
+		saveFlags(flagData);
 		String content = getSpawnDefString();
 		try {
 			if (file.exists()) {
@@ -182,6 +217,7 @@ public class MainApp extends Application {
 		spawnDef = new SpawnDef(content);
 		setDirty(false);
 		populateProperties(propertyData);
+		populateFlags(flagData);
 	};
 	
 	boolean isDirty() {
@@ -203,6 +239,29 @@ public class MainApp extends Application {
 		}
 	}
 
+	/**
+	 * saveFlags - save the flag data from the ObvervableList into the SpawnDef this controls
+	 * @param flagData 
+	 * @throws InvalidFormatException 
+	 * 
+	 */
+	void saveFlags(ObservableList<SpawnDefFlag> flagData) {
+		if (spawnDef == null) return;
+		try {
+			for (SpawnDefFlag flag : flagData) {
+				String name = flag.getName();
+				boolean value = flag.getValue();
+				spawnDef.setFlag(name, value);
+			}
+		} catch (InvalidFormatException e) {
+			Dialogs.showErrorDialog(primaryStage,
+					"Error saving flags",
+					"Could not save flags:\n", "Error", e);
+		}
+	}
+
+
+	
 	public SpawnDef getSpawnDef() {
 		return spawnDef;
 	}
@@ -215,8 +274,13 @@ public class MainApp extends Application {
 		launch(args);
 	}
 
-
 	public void setDirty(boolean b) {
 		spawnDef.setDirty(b);
+	}
+
+
+	public void changedTab(Number oldValue, Number newValue) {
+		// TODO Auto-generated method stub
+		
 	}
 }
