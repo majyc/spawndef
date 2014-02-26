@@ -1,5 +1,7 @@
 package resurgence.spawndef.controller;
 
+import java.io.File;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -36,6 +38,14 @@ public class SpawnDefOverviewController {
 	
 	
 	@FXML
+	private TableView<ActorProperty> actorTable;
+	@FXML
+	private TableColumn<ActorProperty, String> actorPropNameColumn;
+	@FXML
+	private TableColumn<ActorProperty, String> actorPropValueColumn;
+	
+	
+	@FXML
 	private Label treeLabel;
 
 	@FXML
@@ -56,7 +66,7 @@ public class SpawnDefOverviewController {
 		//treeLabel = new Label(treeLabelText);
 
 		//Create a TreeItem that will act as the root item of the TreeView
-		TreeItem<String> sdRoot = new TreeItem<String>("A Spawn Def"); 
+		TreeItem<String> sdRoot = new TreeItem<String>("Spawn Def"); 
 		//Add TreeItems to the root
 		sdRoot.getChildren().addAll(
 				new TreeItem<String>("Properties"),
@@ -84,6 +94,24 @@ public class SpawnDefOverviewController {
 		flagValueColumn.setCellValueFactory(new PropertyValueFactory<SpawnDefFlag, Boolean>("value"));
 		flagValueColumn.setCellFactory(CheckBoxTableCell.<SpawnDefFlag>forTableColumn(flagValueColumn));
 
+		actorPropNameColumn.setCellValueFactory(new PropertyValueFactory<ActorProperty, String>("name"));
+
+		actorPropValueColumn.setCellValueFactory(new PropertyValueFactory<ActorProperty, String>("value"));
+		actorPropValueColumn.setCellFactory(TextFieldTableCell.<ActorProperty>forTableColumn());
+		actorPropValueColumn.setOnEditCommit(
+				new EventHandler<CellEditEvent<ActorProperty, String>>() {
+					@Override
+					public void handle(CellEditEvent<ActorProperty, String> t) {
+						((ActorProperty) t.getTableView().getItems().get(
+								t.getTablePosition().getRow())
+								).setValue(t.getNewValue());
+					}
+				}
+				);
+
+		
+		
+		
 		//Use the setRoot method to set the root TreeItem
 		sdTree.setRoot(sdRoot);
 
@@ -100,6 +128,14 @@ public class SpawnDefOverviewController {
 							flagTable.toFront();
 						} else if (selected.startsWith("prop")) {
 							propertyTable.toFront();
+						} else if (selected.startsWith("actor")) {
+							String[] value = newItem.getValue().split("\\s+");
+							int index = 0;
+							if (value.length > 1) {
+								index = Integer.parseInt(value[1]);
+							}
+							mainApp.setCurrentActor(index);
+							actorTable.toFront();
 						}
 					}
 				});
@@ -120,10 +156,13 @@ public class SpawnDefOverviewController {
 	 */
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-
+		File sdFile = this.mainApp.getSpawnDefFilePath();
+		String name = sdFile.getName();
+		tabPane.getSelectionModel().getSelectedItem().setText(name);
 		// Add observable list data to the table
 		propertyTable.setItems(mainApp.getPropertyData());
 		flagTable.setItems(mainApp.getFlagData());
+		actorTable.setItems(mainApp.getActorData());
 	}
 
 }

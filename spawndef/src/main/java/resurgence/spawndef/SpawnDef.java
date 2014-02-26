@@ -332,5 +332,17 @@ public class SpawnDef implements IDefinition {
 			}
 		}
 	}
+	
+	public Actor getActor(int index) {
+		return actors.get(index);
+	}
+	
+	public void setActor(int index, Actor actor) {
+		actors.set(index, actor);
+	}
+	
+	public int numActors() {
+		return actors.size();
+	}
 
 }

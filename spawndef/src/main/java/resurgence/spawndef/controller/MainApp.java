@@ -15,6 +15,8 @@ import javafx.scene.control.Dialogs;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import resurgence.spawndef.Actor;
+import resurgence.spawndef.Actor.Element;
 import resurgence.spawndef.InvalidFormatException;
 import resurgence.spawndef.SpawnDef;
 
@@ -28,8 +30,27 @@ public class MainApp extends Application {
 	 */
 	private ObservableList<SpawnDefProperty> propertyData = FXCollections.observableArrayList();
 	private ObservableList<SpawnDefFlag> flagData = FXCollections.observableArrayList();
+	private ObservableList<ActorProperty> actorData = FXCollections.observableArrayList();
 	
 	private SpawnDef spawnDef;
+	
+	private int currentActor = 0;
+
+	public int getCurrentActor() {
+		return currentActor;
+	}
+
+	public void setCurrentActor(int currentActor) {
+		if (this.currentActor != currentActor) {
+			// actor has changed, clear the list first
+			this.currentActor = currentActor;
+			actorData.clear();
+		}
+		// should be empty on a new actor or if the current actor has changed
+		if (actorData.isEmpty()) {
+			populateActorProperties(actorData);			
+		}
+	}
 
 	public MainApp() {
 	}
@@ -119,6 +140,25 @@ public class MainApp extends Application {
 		}
 	}
 
+	/**
+	 * populateActorProperties - fill the ObservableList with data from the SpawnDef this controls for properties
+	 * @param actorData 
+	 * 
+	 */
+	void populateActorProperties(ObservableList<ActorProperty> actorData) {
+		if (spawnDef == null) return;
+		for (Element actorElementName : Actor.Element.values()) {
+			Actor actor = spawnDef.getActor(currentActor);
+			try {
+				actorData.add(new ActorProperty(spawnDef, actorElementName, actor.getElementByName(actorElementName)));
+			} catch (InvalidFormatException e) {
+				Dialogs.showErrorDialog(primaryStage,
+						"Could not load Actor Property: " + actorElementName,
+						"Could not load", "Error", e);
+			}			
+		}
+	}
+
 
 	/**
 	 * Returns the data as an observable list of SpawnDefProperties. 
@@ -135,8 +175,15 @@ public class MainApp extends Application {
 	public ObservableList<SpawnDefFlag> getFlagData() {
 		return flagData;
 	}
-		
+				
 
+	/**
+	 * Returns the data as an observable list of ActorProperty. 
+	 * @return
+	 */
+	public ObservableList<ActorProperty> getActorData() {
+		return actorData;
+	}	
 	
 	/**
 	 * Returns the SpawnDef file preference, i.e. the file that was last opened.
@@ -283,4 +330,5 @@ public class MainApp extends Application {
 		// TODO Auto-generated method stub
 		
 	}
+
 }
